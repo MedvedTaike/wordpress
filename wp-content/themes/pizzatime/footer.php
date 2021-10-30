@@ -130,9 +130,5 @@
 </div>
 <!-- /.popup-error -->
   <?php wp_footer() ?>
-  <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.min.js"></script>
-
-  <script src="<?php echo get_template_directory_uri() ?>/assets/js/main.js"></script>
 </body>
 </html>

@@ -33,3 +33,14 @@ function site_scripts() {
     'siteUrl' => get_template_directory_uri(),
   ]);
 }
+
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
+add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
+function crb_attach_theme_options() {
+    Container::make( 'theme_options', __( 'Theme Options' ) )
+        ->add_tab( 'Общие настройки', [
+            Field::make( 'image', 'crb_image', __('Image') ),
+         ] );
+}
