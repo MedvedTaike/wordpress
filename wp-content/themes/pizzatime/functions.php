@@ -33,7 +33,19 @@ function site_scripts() {
     'siteUrl' => get_template_directory_uri(),
   ]);
 }
-
+add_action('init', 'create_global_variable');
+function create_global_variable() {
+  global $pizza_time;
+  $pizza_time = [
+    'phone' => carbon_get_theme_option( 'site_phone' ),
+    'phone_digits' => carbon_get_theme_option( 'site_phone_digits' ),
+    'address' => carbon_get_theme_option( 'site_address' ),
+    // 'map_coordinates' => carbon_get_theme_option( 'site_map_coordinates' ),
+    // 'vk_url' => carbon_get_theme_option( 'site_vk_url' ),
+    // 'fb_url' => carbon_get_theme_option( 'site_fb_url' ),
+    // 'inst_url' => carbon_get_theme_option( 'site_inst_url' ),
+  ];
+}
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -41,6 +53,11 @@ add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
 function crb_attach_theme_options() {
     Container::make( 'theme_options', __( 'Theme Options' ) )
         ->add_tab( 'Общие настройки', [
-            Field::make( 'image', 'crb_image', __('Image') ),
-         ] );
+            Field::make( 'image', 'site_logo', 'Логотип' ),
+         ])
+        ->add_tab( 'Контакты', [
+            Field::make( 'text', 'site_phone', 'Телефон' ),
+            Field::make( 'text', 'site_phone_digit', 'Цифры телефона' ),
+            Field::make( 'text', 'site_address', 'Аддрес' ),
+         ]);
 }

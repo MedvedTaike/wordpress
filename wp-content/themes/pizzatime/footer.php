@@ -26,7 +26,7 @@
           </ul>
         </nav>
         <div class="phone popup__phone">
-          <a class="phone__item phone__item--accent" href="tel:+79999999999">+7 (999) 999-99-99</a>
+          <a class="phone__item phone__item--accent" href="tel:<?php echo $GLOBALS['pizza_time']['phone_digits']; ?>"><?php echo $GLOBALS['pizza_time']['phone']; ?></a>
         </div>
         <ul class="socials">
           <li class="socials__item">
@@ -123,7 +123,7 @@
       <div class="popup__content">
         <button class="btn-close popup__btn-close popup-close"></button>
         <h2 class="page-title popup__title">Произошла ошибка</h2>
-        <p class="popup__subtitle">Пожалуйста, сделайте заказ по номеру <a class="popup__link" href="+79999999999">+7 (999) 999-99-99</a></p>
+        <p class="popup__subtitle">Пожалуйста, сделайте заказ по номеру <a class="popup__link" href="<?php echo $GLOBALS['pizza_time']['phone_digits']; ?>"><?php echo $GLOBALS['pizza_time']['phone']; ?></a></p>
       </div>
     </div>
   </div>

@@ -17,7 +17,7 @@ Template name: Главная
   </div>
 </section>
 <!-- /.section-top -->
-
+<?php echo carbon_get_theme_option('site_phone') ?>
 <!-- section-catalog -->
 <section class="section section-catalog">
   <div class="container">
@@ -317,14 +317,16 @@ Template name: Главная
         <div class="contacts__map" id="ymap"></div>
       </div>
       <div class="contacts__end">
+        <?php if($GLOBALS['pizza_time']['address']): ?>
         <div class="contacts__item">
           <h3 class="contacts__title">Адрес</h3>
-          <p class="contacts__text">г. Москва, Преображенская площадь, 8</p>
+          <p class="contacts__text"><?php echo $GLOBALS['pizza_time']['address']; ?></p>
         </div>
+        <?php endif; ?>
         <div class="contacts__item">
           <h3 class="contacts__title">Телефон</h3>
           <p class="contacts__text">
-            <a class="contacts__phone" href="tel:+79117112123">+7 (911) 711-21-23</a>
+            <a class="contacts__phone" href="tel:<?php echo $GLOBALS['pizza_time']['phone_digits']; ?>"><?php echo $GLOBALS['pizza_time']['phone']; ?></a>
           </p>
         </div>
         <div class="contacts__item">
