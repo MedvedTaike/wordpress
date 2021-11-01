@@ -17,7 +17,7 @@ Template name: Главная
   </div>
 </section>
 <!-- /.section-top -->
-<?php echo carbon_get_theme_option('site_phone') ?>
+
 <!-- section-catalog -->
 <section class="section section-catalog">
   <div class="container">
@@ -314,7 +314,7 @@ Template name: Главная
     </header>
     <div class="contacts">
       <div class="contacts__start">
-        <div class="contacts__map" id="ymap"></div>
+        <div class="contacts__map" id="ymap" data-coordinates="<?php echo $GLOBALS['pizza_time']['map_coordinates'] ?>" data-address="<?php echo $GLOBALS['pizza_time']['address'] ?>"></div>
       </div>
       <div class="contacts__end">
         <?php if($GLOBALS['pizza_time']['address']): ?>

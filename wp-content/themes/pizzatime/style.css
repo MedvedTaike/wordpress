@@ -1081,14 +1081,15 @@ xs: 576px
     margin-right: 15px;
   }
   
-  .header-page__ul {
+  .header-page__ul  {
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
   }
   
-  .header-page__link {
+  .header-page__link, 
+  .header-page__ul a{
     color: #fff;
     text-decoration: none;
     display: block;
