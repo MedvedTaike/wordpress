@@ -34,12 +34,13 @@ function site_scripts() {
   ]);
 }
 
+add_action('init', 'create_global_variable');
 add_action( 'after_setup_theme', 'theme_support' );
 function theme_support() {
   register_nav_menu( 'menu_main_header', 'Меню в шапке' );
+  add_theme_support('post-thumbnails');
 }
 
-add_action('init', 'create_global_variable');
 function create_global_variable() {
   global $pizza_time;
   $pizza_time = [
@@ -55,11 +56,12 @@ function create_global_variable() {
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
-add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
-function crb_attach_theme_options() {
-    Container::make( 'theme_options', __( 'Theme Options' ) )
+add_action( 'carbon_fields_register_fields', 'crb_attach' );
+function crb_attach() {
+    Container::make( 'theme_options', __( 'Настройки' ) )
         ->add_tab( 'Общие настройки', [
             Field::make( 'image', 'site_logo', __('Логотип') ),
+            Field::make( 'text', 'site_footer_text', 'Текст в подвале' ),
          ])
         ->add_tab( 'Контакты', [
             Field::make( 'text', 'site_phone', __( 'Телефон' )  ),
@@ -70,4 +72,91 @@ function crb_attach_theme_options() {
             Field::make( 'text', 'site_fb_url', __('Фейсбук') ),
             Field::make( 'text', 'site_inst_url', __('Инстаграм') ),
          ]);
+        Container::make('post_meta', __('Дополнительные поля'))
+         ->show_on_page(8)
+         ->add_tab('Первый экран!', [
+           Field::make('text', 'top_info', __('Надзаголовок!')),
+           Field::make('text', 'top_title', __('Заголовок!')),
+           Field::make('text', 'top_btn_text', __('Текст кнопки'))->set_width(50),
+           Field::make('text', 'top_btn_scroll_to', __('Класс секции для перехода!'))->set_width(50),
+           Field::make('image', 'top_img', __('Изображение')),
+         ])
+         ->add_tab('Каталог!', [
+           Field::make('text', 'catalog_title', __('Заголовок!')),
+         ])
+         ->add_tab( 'О нас', [
+          Field::make( 'text', 'about_title', __('Заголовок') ),
+          Field::make( 'rich_text', 'about_text', __('Текст') ),
+          Field::make( 'image', 'about_img', __('Изображение') ),
+        ])
+        ->add_tab( 'Контакты', [
+          Field::make( 'text', 'contacts_title', __('Заголовок') ),
+          Field::make( 'checkbox', 'contacts_is_img', __('Показать изображение помидоров') )
+        ]);
+
+        Container::make( 'post_meta', __('Дополнительные поля') )
+        ->show_on_page(21)
+        ->add_tab( 'Информация о странице', [
+            Field::make( 'media_gallery', 'gallery', __('Галерея') )
+        ]);
+
+        Container::make( 'post_meta', __('Дополнительные поля') )
+        ->show_on_post_type('product')
+        ->add_tab( 'Информация товара', [
+          Field::make( 'text', 'product_price', __('Цена') ),
+          Field::make( 'complex', 'product_attributes', __('Атрибуты') )
+          ->set_max(3)
+          ->add_fields([
+            Field::make( 'text', 'name', 'Название' )->set_width(50),
+            Field::make( 'text', 'price', 'Цена' )->set_width(50),
+           ])
+      ]);
+}
+
+function convertToWebpSrc($src) {
+  $src_webp = $src . '.webp';
+  return str_replace('uploads', 'uploads-webpc', $src_webp);
+}
+add_action( 'init', 'register_post_types' );
+function register_post_types() {
+  register_post_type('product', [
+    'labels' => [
+      'name'               => 'Товары', // основное название для типа записи
+      'singular_name'      => 'Товар', // название для одной записи этого типа
+      'add_new'            => 'Добавить товар', // для добавления новой записи
+      'add_new_item'       => 'Добавление товара', // заголовка у вновь создаваемой записи в админ-панели.
+      'edit_item'          => 'Редактирование товара', // для редактирования типа записи
+      'new_item'           => 'Новый товар', // текст новой записи
+      'view_item'          => 'Смотреть товар', // для просмотра записи этого типа.
+      'search_items'       => 'Искать товар', // для поиска по этим типам записи
+      'not_found'          => 'Не найдено', // если в результате поиска ничего не было найдено
+      'not_found_in_trash' => 'Не найдено в корзине', // если не было найдено в корзине
+      'menu_name'          => 'Товары', // название меню
+    ],
+    'menu_icon'          => 'dashicons-cart',
+    'public'             => true,
+    'menu_position'      => 5,
+    'supports'           => ['title', 'editor', 'thumbnail', 'excerpt'],
+    'has_archive'        => true,
+    'rewrite'            => ['slug' => 'products']
+   ] );
+
+   register_taxonomy('product-categories', 'product', [
+    'labels'        => [
+      'name'                        => 'Категории товаров',
+      'singular_name'               => 'Категория товаров',
+      'search_items'                => 'Искать категории',
+      'popular_items'               => 'Популярные категории',
+      'all_items'                   => 'Все категории',
+      'edit_item'                   => 'Изменить категорию',
+      'update_item'                 => 'Обновить категорию',
+      'add_new_item'                => 'Добавить новую категорию',
+      'new_item_name'               => 'Новое название категории',
+      'separate_items_with_commas'  => 'Отделить категории запятыми',
+      'add_or_remove_items'         => 'Добавить или удалить категорию',
+      'choose_from_most_used'       => 'Выбрать самую популярную категорию',
+      'menu_name'                   => 'Категории',
+    ],
+    'hierarchical'  => true,
+  ]);
 }

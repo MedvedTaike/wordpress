@@ -5,24 +5,31 @@ Template name: Главная
 */
 
 ?>
+<?php $page_id = get_the_ID(); ?>
 <?php get_header() ?>
 <!-- section-top -->
-<section class="section-top lazy" data-src="<?php echo get_template_directory_uri() ?>/assets/img/section-top/bg.webp" data-src-replace-webp="<?php echo get_template_directory_uri() ?>/assets/img/section-top/bg.jpg">
+
+<?php
+  $top_img_id = carbon_get_post_meta( $page_id, 'top_img' );
+  $top_img_src = wp_get_attachment_image_url($top_img_id, 'full');
+  $top_img_src_webp = convertToWebpSrc($top_img_src);
+?>
+<section class="section-top lazy" data-src="<?php echo get_template_directory_uri() ?>/assets/img/section-top/bg.webp" data-src-replace-webp="<?php echo $top_img_src ?>">
   <div class="container section-top__container">
-    <p class="section-top__info">от итальянского повара</p>
-    <h1 class="section-top__title">Лучшая пицца в Москве</h1>
+  <p class="section-top__info"><?php echo carbon_get_post_meta( $page_id, 'top_info' ); ?></p>
+    <h1 class="section-top__title"><?php echo carbon_get_post_meta( $page_id, 'top_title' ); ?></h1>
     <div class="section-top__btn">
-      <button class="btn" type="button" data-scroll-to="section-catalog">Выбрать</button>
+    <button class="btn" type="button" data-scroll-to="<?php echo carbon_get_post_meta( $page_id, 'top_btn_scroll_to' ); ?>"><?php echo carbon_get_post_meta( $page_id, 'top_btn_text' ); ?></button>
     </div>
   </div>
 </section>
 <!-- /.section-top -->
 
 <!-- section-catalog -->
-<section class="section section-catalog">
+<section class="section section-catalog" id="section-catalog">
   <div class="container">
     <header class="section__header">
-      <h2 class="page-title page-title--accent">Меню</h2>
+      <h2 class="page-title page-title--accent"><?php echo carbon_get_post_meta( $page_id, 'catalog_title' ); ?></h2>
       <nav class="catalog-nav">
         <ul class="catalog-nav__wrapper">
           <li class="catalog-nav__item">
@@ -290,16 +297,17 @@ Template name: Главная
 <!-- /.section-catalog -->
 
 <!-- section-about -->
-<section class="section section-about">
+<section class="section section-about" id="section-about">
   <picture>
     <source type="image/webp" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-srcset="<?php echo get_template_directory_uri() ?>/assets/img/section-about/bg.webp">
     <img class="section-about__img lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-src="<?php echo get_template_directory_uri() ?>/assets/img/section-about/bg.jpg" alt="">
   </picture>
   <div class="container section-about__container">
     <div class="section-about__content">
-      <h2 class="page-title section-about__title">О нас</h2>
-      <p class="section-about__text">Доставим вам горячую пиццу менее чем за час или пицца бесплатно.
-        Мы готовим пиццу только из свежих продуктов. Каждый день мы покупаем свежие овощи, грибы и мясо.</p>
+      <h2 class="page-title section-about__title"><?php echo carbon_get_post_meta( $page_id, 'about_title' ); ?></h2>
+      <div class="section-about__text">
+        <?php echo carbon_get_post_meta( $page_id, 'about_text' ); ?>
+      </div>
     </div>
   </div>
 </section>
@@ -308,9 +316,11 @@ Template name: Главная
 <!-- section-contacts -->
 <section class="section section-contacts">
   <div class="container section-contacts__container">
-    <div class="section-contacts__img lazy" data-src="<?php echo get_template_directory_uri() ?>/assets/img/section-contacts/tomatoes.webp" data-src-replace-webp="<?php echo get_template_directory_uri() ?>/assets/img/section-contacts/tomatoes.jpg"></div>
+    <?php if (carbon_get_post_meta( $page_id, 'contacts_is_img' )) : ?>
+      <div class="section-contacts__img lazy" data-src="<?php echo get_template_directory_uri(); ?>/assets/img/section-contacts/tomatoes.webp" data-src-replace-webp="img/section-contacts/tomatoes.jpg"></div>
+    <?php endif; ?>    
     <header class="section__header">
-      <h2 class="page-title sectoin-contacts__title">Контакты</h2>
+      <h2 class="page-title sectoin-contacts__title"><?php echo carbon_get_post_meta( $page_id, 'contacts_title' ); ?></h2>
     </header>
     <div class="contacts">
       <div class="contacts__start">
@@ -332,8 +342,9 @@ Template name: Главная
         <div class="contacts__item">
           <h3 class="contacts__title">Социальные сети</h3>
           <ul class="socials">
+          <?php if ($GLOBALS['pizza_time']['vk_url']) : ?>
             <li class="socials__item">
-              <a href="#" class="socials__link" target="_blank">
+              <a href="<?php echo $GLOBALS['pizza_time']['vk_url']; ?>" class="socials__link" target="_blank">
                 <svg class="socials__icon socials__icon--vk" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.2 112.2" width="35" height="35">
                   <g>
                     <circle cx="56.1" cy="56.1" r="56.1" />
@@ -342,8 +353,10 @@ Template name: Главная
                 </svg>
               </a>
             </li>
+          <?php endif; ?>
+          <?php if ($GLOBALS['pizza_time']['fb_url']) : ?>
             <li class="socials__item">
-              <a href="#" class="socials__link" target="_blank">
+              <a href="<?php echo $GLOBALS['pizza_time']['fb_url']; ?>" class="socials__link" target="_blank">
                 <svg class="socials__icon socials__icon--fb" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112.2 112.2" width="35" height="35">
                   <g>
                     <circle cx="56.1" cy="56.1" r="56.1" />
@@ -352,8 +365,10 @@ Template name: Главная
                 </svg>
               </a>
             </li>
+          <?php endif; ?>
+          <?php if ($GLOBALS['pizza_time']['inst_url']) : ?>
             <li class="socials__item">
-              <a href="#" class="socials__link" target="_blank">
+              <a href="<?php echo $GLOBALS['pizza_time']['inst_url']; ?>" class="socials__link" target="_blank">
                 <svg class="socials__icon socials__icon--inst" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="35" height="35">
                   <g>
                     <path d="M332.3,136.2H179.7a44.21,44.21,0,0,0-44.2,44.2V333a44.21,44.21,0,0,0,44.2,44.2H332.3A44.21,44.21,0,0,0,376.5,333V180.4A44.21,44.21,0,0,0,332.3,136.2ZM256,336a79.3,79.3,0,1,1,79.3-79.3A79.42,79.42,0,0,1,256,336Zm81.9-142.2A18.8,18.8,0,1,1,356.7,175,18.78,18.78,0,0,1,337.9,193.8Z" />
@@ -363,6 +378,7 @@ Template name: Главная
                 </svg>
               </a>
             </li>
+          <?php endif; ?>
           </ul>
         </div>
       </div>

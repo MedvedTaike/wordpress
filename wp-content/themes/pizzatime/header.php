@@ -29,8 +29,14 @@
 <header class="header-page">
   <div class="container header-page__container">
     <div class="header-page__start">
-      <div class="logo">
-        <img class="logo__img" src="<?php echo wp_get_attachment_image_url(carbon_get_theme_option('site_logo')) ?>" alt="" width="127" height="21">
+    <div class="logo">
+        <?php if (is_front_page()) : ?>
+          <img class="logo__img" src="<?php echo wp_get_attachment_image_url(carbon_get_theme_option( 'site_logo' )); ?>" alt="" width="127" height="21">
+        <?php else : ?>
+          <a href="<?php echo get_home_url(); ?>">
+            <img class="logo__img" src="<?php echo wp_get_attachment_image_url(carbon_get_theme_option( 'site_logo' )); ?>" alt="" width="127" height="21">
+          </a>
+        <?php endif; ?>
       </div>
     </div>
     <div class="header-page__end">

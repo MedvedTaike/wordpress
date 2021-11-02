@@ -160,21 +160,22 @@
     window.scrollTo(0, targetOffsetTop - headerOffset);
   }
 
-  myLib.body.addEventListener('click', function(e) {
-    var target = e.target;
-    var scrollToItemClass = myLib.closestAttr(target, 'data-scroll-to');
+  // myLib.body.addEventListener('click', function(e) {
+  //   var target = e.target;
+  //   var href = myLib.closestAttr(target, 'href');
 
-    if (scrollToItemClass === null) {
-      return;
-    }
+  //   if (href === null || href[0] !== '#') {
+  //     return;
+  //   }
 
-    e.preventDefault();
-    var scrollToItem = document.querySelector('.' + scrollToItemClass);
+  //   e.preventDefault();
+  //   var scrollToItemClass = href.slice(1)
+  //   var scrollToItem = document.querySelector('.' + scrollToItemClass);
 
-    if (scrollToItem) {
-      scroll(scrollToItem);
-    }
-  });
+  //   if (scrollToItem) {
+  //     scroll(scrollToItem);
+  //   }
+  // });
 })();
 /* scrollTo end */
 
